@@ -14,10 +14,10 @@
 
 6. **Backpressure**: Helps control the flow of data in the system to avoid overloading handlers.
 
-7. **The Or-pattern**: Combines results from multiple channels, completing when the first channel returns a result.
+7. **The or-channel pattern**: Combines results from multiple channels, completing when the first channel returns a result.
 
-8. **The Tee pattern**: Copies input data into multiple output channels for parallel processing.
+8. **The tee-channel pattern**: Copies input data into multiple output channels for parallel processing.
 
-9. **The Bridge pattern**: Allows you to link multiple channels, passing data between them.
+9. **The bridge-channel pattern**: Allows you to link multiple channels, passing data between them.
 
 10. **The Pipeline pattern**: Creates sequential data processing, where each processing stage runs in a separate goroutine.
