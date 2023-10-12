@@ -20,9 +20,12 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background()) // or context.WithDeadline, or context.WithTimeout
 	defer cancel()                                          // best practice, but don't rely on it for timely cancellation
 
-	result := make(chan any)
+	result := make(chan any, 1)
 
 	go func() {
+		if ctx.Err() != nil { // abort if context is already cancelled
+			return
+		}
 		r, err := request(ctx)
 		if err != nil {
 			fmt.Println("request error: ", err)
