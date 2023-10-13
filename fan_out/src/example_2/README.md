@@ -1,4 +1,4 @@
-## Example:
+## Example 2:
 
 The "Fan-Out" pattern with context cancellation, which allows distributing data from a single source channel to multiple worker goroutines and gracefully stopping the distribution process. Here's how it works:
 

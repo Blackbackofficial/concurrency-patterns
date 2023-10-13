@@ -1,4 +1,4 @@
-## Example:
+## Example 3:
 
 The "Fan-Out" pattern, which efficiently distributes data from a source channel (`src`) to multiple worker goroutines through destination channels. Here's how it operates:
 
