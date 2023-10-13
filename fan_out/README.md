@@ -1,4 +1,5 @@
 ## The "Fan-Out"
+
 The "Fan-Out" pattern is a concurrency pattern used to distribute data from a single source to multiple worker goroutines. It involves creating a set of destination channels, launching worker goroutines, and distributing data concurrently to each worker. This pattern is useful for parallelizing tasks and improving processing efficiency in Go programs.
 
 **Example 1: "Fan-Out" Pattern**
