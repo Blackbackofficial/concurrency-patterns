@@ -1,6 +1,6 @@
 # Concurrency Patterns in Golang
 
-Here are 6 popular concurrency patterns in Golang, each represented by a unique color and icon for visual clarity:
+When working with parallel operations in Golang, there are several important patterns, each of which has its own unique features. Let's look at them:
 
 1. 🟢 **The Done Channel Pattern**: This pattern is used for signaling the completion of goroutines through a special "done" channel. It allows for effective synchronization and coordination in concurrent operations.
 
