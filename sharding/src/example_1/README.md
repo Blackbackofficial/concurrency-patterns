@@ -1,23 +1,23 @@
-## Example 1:
+## Пример 1:
 
-The "Sharding" pattern is implemented, which efficiently distributes data among multiple shards, enabling parallel access and data management.
+В этом примере реализован паттерн "Sharding", который эффективно распределяет данные среди нескольких шард, обеспечивая параллельный доступ и управление данными.
 
-1. **Shard**: This is a structure representing an individual shard with read-write mutexes (`sync.RWMutex`) and a map (`map`) for data storage. Shards are used to divide data into parts.
+1. **Шард**: Это структура, представляющая отдельный шард с мьютексами для чтения и записи (`sync.RWMutex`) и картой (`map`) для хранения данных. Шарды используются для разделения данных на части.
 
-2. **ShardedMap**: It is a slice of shards, with each shard having its own mutex for safe data handling. In this example, the `ShardedMap` is parameterized with the data type `V`.
+2. **ShardedMap**: Это срез шардов, при этом каждый шард имеет свой собственный мьютекс для безопасной обработки данных. В этом примере `ShardedMap` параметризуется типом данных `V`.
 
-3. **NewShardedMap (Creating a Sharded Map)**: This function creates and initializes a sharded map with a specified number of shards (`nShards`). For each shard, a map is created to store data.
+3. **NewShardedMap (Создание Sharded Map)**: Эта функция создает и инициализирует Sharded Map с заданным количеством шардов (`nShards`). Для каждого шарда создается карта для хранения данных.
 
-4. **Get (Retrieving Data)**: The `Get` method is used to retrieve a value associated with a key from the sharded map. It selects the appropriate shard, locks it for reading (`RLock`), and returns the value. The mutex is released after reading.
+4. **Get (Извлечение данных)**: Метод `Get` используется для извлечения значения, связанного с ключом, из Sharded Map. Он выбирает соответствующий шард, блокирует его для чтения (`RLock`) и возвращает значение. Мьютекс освобождается после чтения.
 
-5. **Set (Setting Data)**: The `Set` method is used to set a value for a given key in the sharded map. It selects the corresponding shard, locks it for writing (`Lock`), sets the value, and releases the mutex.
+5. **Set (Установка данных)**: Метод `Set` используется для установки значения для заданного ключа в Sharded Map. Он выбирает соответствующий шард, блокирует его для записи (`Lock`), устанавливает значение и освобождает мьютекс.
 
-6. **Keys (Retrieving Keys)**: The `Keys` method gathers all keys from all shards. For safety, an additional mutex (`mu`) and a `sync.WaitGroup` (`wg`) are used to wait for the completion of key reading from all shards.
+6. **Keys (Извлечение ключей)**: Метод `Keys` собирает все ключи из всех шардов. Для обеспечения безопасности используется дополнительный мьютекс (`mu`) и `sync.WaitGroup` (`wg`), чтобы дождаться завершения чтения ключей из всех шардов.
 
-7. **shardIndex (Calculating Shard Index)**: This method calculates the shard index for a given key using SHA1 hashing.
+7. **shardIndex (Вычисление индекса шарда)**: Этот метод вычисляет индекс шарда для заданного ключа с использованием хэширования SHA1.
 
-8. **shard (Getting a Shard)**: The `shard` method returns the shard associated with the given key. It uses `shardIndex` to determine the shard's index.
+8. **shard (Получение шарда)**: Метод `shard` возвращает шард, связанный с заданным ключом. Он использует `shardIndex` для определения индекса шарда.
 
-9. **main (Main Function)**: In the `main` function, a sharded map with 5 shards is created. Then, three key-value pairs are added to it. The `Get` method is used to retrieve data for the keys "alpha," "beta," and "gamma." Finally, the keys available in the shards are printed using the `Keys` method.
+9. **main (Главная функция)**: В функции `main` создается Sharded Map с 5 шардами. Затем в него добавляются три пары ключ-значение. Метод `Get` используется для извлечения данных по ключам "alpha", "beta" и "gamma". Наконец, выводятся ключи, доступные в шардах, с использованием метода `Keys`.
 
-The "Sharding" pattern efficiently manages data, distributes it among multiple shards, and provides parallel access to data in a multi-threaded environment.
+Паттерн "Sharding" в этом коде эффективно управляет данными, распределяет их между несколькими шардами и обеспечивает параллельный доступ к данным в многопоточной среде.

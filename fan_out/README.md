@@ -1,20 +1,21 @@
-## The "Fan-Out"
-The "Fan-Out" pattern is a concurrency pattern used to distribute data from a single source to multiple worker goroutines. It involves creating a set of destination channels, launching worker goroutines, and distributing data concurrently to each worker. This pattern is useful for parallelizing tasks and improving processing efficiency in Go programs.
+## Паттерн "Fan-Out"
 
-**Example 1: "Fan-Out" Pattern**
-- Efficiently distributes data from one source channel to multiple worker goroutines.
-- Creates destination channels for each worker.
-- Demonstrates concurrent data processing.
-- Utilizes a WaitGroup to synchronize worker completion.
+Паттерн "Fan-Out" представляет собой конкурентный паттерн, используемый для распределения данных из одного источника на несколько рабочих горутин. Он включает в себя создание набора целевых каналов, запуск рабочих горутин и одновременное распределение данных каждому рабочему. Этот паттерн полезен для параллельной обработки задач и улучшения эффективности обработки в программах на языке Go.
 
-**Example 2: "Fan-Out" Pattern with Context Cancellation**
-- Extends "Fan-Out" with graceful termination using context cancellation.
-- Worker goroutines respond to context signals for clean shutdown.
-- Simulates work, cancels context, and waits for worker completion.
+**Пример 1: Паттерн "Fan-Out"**
+- Эффективное распределение данных из одного источника канала на несколько рабочих горутин.
+- Создание целевых каналов для каждой рабочей горутины.
+- Демонстрация параллельной обработки данных.
+- Использование WaitGroup для синхронизации завершения работы рабочих горутин.
 
-**Example 3: "Fan-Out" Pattern with `sync.WaitGroup`**
-- Efficiently distributes data from a source channel to multiple worker goroutines.
-- Uses a WaitGroup for worker synchronization.
-- Demonstrates parallelized data processing.
+**Пример 2: Паттерн "Fan-Out" с отменой контекста**
+- Расширение "Fan-Out" с грациозным завершением с использованием отмены контекста.
+- Рабочие горутины реагируют на сигналы контекста для чистого завершения.
+- Симуляция работы, отмена контекста и ожидание завершения рабочих горутин.
 
-These examples illustrate how to efficiently parallelize work by distributing data from a source to multiple worker goroutines.
+**Пример 3: Паттерн "Fan-Out" с `sync.WaitGroup`**
+- Эффективное распределение данных из исходного канала на несколько рабочих горутин.
+- Использование WaitGroup для синхронизации рабочих горутин.
+- Демонстрация параллельной обработки данных.
+
+Эти примеры иллюстрируют, как эффективно параллелить работу, распределяя данные из источника на несколько рабочих горутин.

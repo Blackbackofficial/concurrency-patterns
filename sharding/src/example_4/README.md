@@ -1,23 +1,23 @@
-## Example 4:
+## Пример 4:
 
-The "Sharding" pattern is applied to balance and distribute requests among multiple shards. Here's how it works:
+Паттерн "Sharding" применяется для балансировки и распределения запросов между несколькими шардами. Вот как это работает:
 
-1. **Data Structure**: The `Request` struct is used to represent individual requests, each with an `ID` (an integer) and `Data` (a string).
+1. **Структура данных**: Структура `Request` используется для представления отдельных запросов, каждый из которых имеет `ID` (целое число) и `Data` (строку).
 
-2. **Main Function**:
-    - An array of `Request` elements, `requests`, is created to represent the requests that need to be balanced and distributed across shards.
-    - A slice of slices of `Request`, `shards`, is created to simulate the shards. In this case, three shards are created.
-    - A `sync.WaitGroup` (`wg`) is used to ensure that all goroutines finish their work before proceeding.
+2. **Главная функция**:
+   - Создается массив элементов `Request`, `requests`, для представления запросов, которые нужно сбалансировать и распределить по шардам.
+   - Создается срез срезов `Request`, `shards`, чтобы имитировать шарды. В данном случае создается три шарда.
+   - Используется `sync.WaitGroup` (`wg`), чтобы гарантировать, что все горутины завершат свою работу перед продолжением.
 
-3. **Goroutines for Request Distribution**:
-    - For each `Request` in the `requests` array, a goroutine is started. Each goroutine is responsible for distributing a request to one of the three shards.
-    - The `loadBalance` function calculates the shard index for a given request based on its `ID`. It uses a simple modulus operation to evenly distribute requests among the three shards.
-    - The goroutine then appends the request to the appropriate shard.
+3. **Горутины для распределения запросов**:
+   - Для каждого `Request` в массиве `requests` запускается горутина. Каждая горутина отвечает за распределение запроса в один из трех шардов.
+   - Функция `loadBalance` вычисляет индекс шарда для данного запроса на основе его `ID`. Она использует простую операцию по модулю для равномерного распределения запросов между тремя шардами.
+   - Затем горутина добавляет запрос в соответствующий шард.
 
-4. **Waiting for Goroutines**: The `main` function waits for all goroutines to finish their work using the `wg.Wait()` statement.
+4. **Ожидание завершения горутин**: Главная функция ждет, пока все горутины завершат свою работу с использованием оператора `wg.Wait()`.
 
-5. **Outputting Requests from Shards**:
-    - After all requests are distributed, the `main` function proceeds to output the requests from all shards.
-    - It iterates through the `shards` slice and prints the request IDs and data within each shard.
+5. **Вывод запросов из шардов**:
+   - После того как все запросы распределены, главная функция переходит к выводу запросов из всех шардов.
+   - Она перебирает срез `shards` и выводит идентификаторы запросов и данные внутри каждого шарда.
 
-The "Sharding" pattern in this code demonstrates the distribution of requests among multiple shards, enabling load balancing and efficient request management. It's particularly useful in scenarios where incoming requests need to be evenly distributed across different partitions or shards for better performance and scalability.
+Паттерн "Sharding" в этом коде демонстрирует распределение запросов между несколькими шардами, обеспечивая балансировку нагрузки и эффективное управление запросами. Он особенно полезен в ситуациях, где входящие запросы должны равномерно распределяться по различным разделам или шардам для повышения производительности и масштабируемости.

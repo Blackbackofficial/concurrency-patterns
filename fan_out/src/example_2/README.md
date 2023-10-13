@@ -1,25 +1,25 @@
-## Example 2:
+## Пример 2:
 
-The "Fan-Out" pattern with context cancellation, which allows distributing data from a single source channel to multiple worker goroutines and gracefully stopping the distribution process. Here's how it works:
+Паттерн "Fan-Out" с отменой контекста, позволяющий распределить данные из одного исходного канала на несколько рабочих горутин и гармонично завершить процесс распределения. Вот как это работает:
 
-1. The `FanOutWithCancel` function takes a source channel (`src`), the number of worker goroutines (`n`), and a context (`ctx`) for cancellation.
+1. Функция `FanOutWithCancel` принимает исходный канал (`src`), количество рабочих горутин (`n`) и контекст (`ctx`) для отмены.
 
-2. It creates an array of destination channels (`dests`) and launches `n` goroutines, each with its own destination channel. These destination channels are used to distribute the data from the source channel to the workers.
+2. Она создает массив целевых каналов (`dests`) и запускает `n` горутин, каждая из которых имеет свой собственный целевой канал. Эти целевые каналы используются для распределения данных из исходного канала среди рабочих.
 
-3. Inside each worker goroutine, there is a `for` loop that reads data from the source channel and forwards it to the associated destination channel. The worker goroutines also listen for signals from the context to gracefully exit the loop and terminate.
+3. Внутри каждой рабочей горутины есть цикл `for`, который читает данные из исходного канала и пересылает их в соответствующий целевой канал. Рабочие горутины также ожидают сигналов от контекста для гармоничного выхода из цикла и завершения.
 
-4. The `main` function starts by creating a source channel using the `source` function, which populates the source channel with integers from 1 to 10.
+4. Функция `main` начинается с создания исходного канала с использованием функции `source`, которая заполняет исходный канал целыми числами от 1 до 10.
 
-5. Then, the `FanOutWithCancel` function is called with the source channel, the desired number of worker goroutines (in this case, 5), and a context for cancellation.
+5. Затем вызывается функция `FanOutWithCancel` с исходным каналом, желаемым количеством рабочих горутин (в данном случае 5) и контекстом для отмены.
 
-6. A `sync.WaitGroup` (`wg`) is used to ensure that the `main` function waits for all workers to finish processing.
+6. Для обеспечения ожидания завершения работы всех рабочих горутин в функции `main` используется `sync.WaitGroup` (`wg`).
 
-7. For each destination channel created by `FanOutWithCancel`, a worker goroutine is started. These worker goroutines read data from their respective destination channels and print it.
+7. Для каждого целевого канала, созданного функцией `FanOutWithCancel`, запускается рабочая горутина. Эти рабочие горутины читают данные из соответствующих целевых каналов и выводят их.
 
-8. To simulate some work, the `main` function introduces a 1-second delay using `time.Sleep(1 * time.Second`.
+8. Чтобы имитировать некоторую работу, функция `main` вводит задержку в 1 секунду с использованием `time.Sleep(1 * time.Second`.
 
-9. After the simulated work, the context is canceled with `cancel()`, which triggers the graceful termination of worker goroutines.
+9. После имитации работы контекст отменяется с помощью `cancel()`, что вызывает гармоничное завершение рабочих горутин.
 
-10. The `main` function waits for all worker goroutines to complete using `wg.Wait()`. After all workers finish processing and the context is canceled, the program exits gracefully.
+10. Функция `main` ожидает завершения всех рабочих горутин с использованием `wg.Wait()`. После завершения всех рабочих и отмены контекста программа завершает работу гармонично.
 
-In summary, the "Fan-Out" pattern with context cancellation efficiently distributes data from a single source to multiple worker goroutines, allowing for concurrent processing, and provides a means for graceful termination using context cancellation.
+В заключение, паттерн "Fan-Out" с отменой контекста эффективно распределяет данные из одного источника на несколько рабочих горутин для параллельной обработки и предоставляет средство для гармоничного завершения с использованием отмены контекста.

@@ -1,20 +1,20 @@
-## Example 3:
-This code also demonstrates the "Fan-In" pattern for merging data from multiple channels into a single channel. Here's how it works:
+## Пример 3:
+Этот код также демонстрирует паттерн "Fan-In" для объединения данных из нескольких каналов в один. Вот как это работает:
 
-1. The `mergeData` function takes a `done` channel and multiple data channels (`datas...`) as arguments. The `done` channel is used to signal the termination of the merging process, while the `datas` channels contain data to be merged.
+1. Функция `mergeData` принимает канал `done` и несколько каналов с данными (`datas...`) в качестве аргументов. Канал `done` используется для сигнализации завершения процесса объединения, а каналы `datas` содержат данные, которые нужно объединить.
 
-2. Inside the `mergeData` function, a `sync.WaitGroup` (`wg`) is created to keep track of the goroutines launched for each data channel. Another channel, `merged`, is created to store the merged data.
+2. Внутри функции `mergeData` создается `sync.WaitGroup` (`wg`) для отслеживания горутин, запущенных для каждого канала с данными. Создается еще один канал, `merged`, для хранения объединенных данных.
 
-3. For each data channel in the `datas` slice, a goroutine is launched. These goroutines continuously select data from the input channels and send it to the `merged` channel. They also listen for signals from the `done` channel to stop processing and return.
+3. Для каждого канала с данными в срезе `datas` запускается горутина. Эти горутины непрерывно выбирают данные из входных каналов и отправляют их в канал `merged`. Они также слушают сигналы от канала `done` для остановки обработки и завершения.
 
-4. The `merged` channel is closed once all the goroutines have finished processing their data. A separate goroutine waits for the completion of the goroutines using `wg.Wait()` and then closes the `merged` channel using `close(merged)`.
+4. Канал `merged` закрывается, когда все горутины завершили обработку своих данных. Отдельная горутина ожидает завершения горутин с использованием `wg.Wait()` и затем закрывает канал `merged` с помощью `close(merged)`.
 
-5. In the `main` function, a `done` channel is created to signal the termination of the merging process. This channel is deferred for closure to ensure it's closed when the program exits.
+5. В функции `main` создается канал `done` для сигнализации завершения процесса объединения. Этот канал откладывается для закрытия, чтобы обеспечить его закрытие при завершении программы.
 
-6. Two data channels (`data1` and `data2`) are created and populated with integer values using separate goroutines.
+6. Создаются два канала с данными (`data1` и `data2`) и заполняются целыми числами с использованием отдельных горутин.
 
-7. The `mergeData` function is called with the `done` channel and the two data channels as arguments. This function combines the data from `data1` and `data2` into the `merged` channel.
+7. Функция `mergeData` вызывается с каналом `done` и двумя каналами с данными в качестве аргументов. Эта функция объединяет данные из `data1` и `data2` в канале `merged`.
 
-8. In the `main` function, a loop reads and prints values from the `merged` channel using `for val := range merged`. This loop continues until all data has been merged and processed.
+8. В функции `main` выполняется цикл для чтения и вывода значений из канала `merged` с использованием `for val := range merged`. Этот цикл продолжается до тех пор, пока все данные не будут объединены и обработаны.
 
-In summary, this code demonstrates the "Fan-In" pattern to merge data from multiple channels into a single channel efficiently. The use of the `done` channel allows for graceful termination of the merging process, and the code efficiently combines data from different sources asynchronously.
+В итоге этот код демонстрирует паттерн "Fan-In" для эффективного объединения данных из нескольких каналов в один. Использование канала `done` позволяет выполнять гармоничное завершение процесса объединения, и код эффективно объединяет данные из разных источников асинхронно.

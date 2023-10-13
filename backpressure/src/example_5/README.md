@@ -1,19 +1,19 @@
-## Example 5:
+## Пример 5:
 
-A worker pool is a common concurrency pattern used to manage a limited number of worker goroutines that can process tasks concurrently.
+Worker-pull - это распространенный паттерн параллелизма, используемый для управления ограниченным количеством рабочих горутин, способных обрабатывать задачи параллельно.
 
-In this code:
+В этом коде:
 
-1. `Task` struct represents individual tasks that can be executed. Each task has a name and a duration.
+1. Структура `Task` представляет индивидуальные задачи, которые могут быть выполнены. Каждая задача имеет имя и длительность.
 
-2. `WorkerPool` struct represents the worker pool. It contains a specified number of worker goroutines (`workers`), a channel (`semaphore`) to limit the number of concurrently active workers, a channel (`taskQueue`) for queuing tasks, a `sync.WaitGroup` (`wg`) to track active workers, and a stop signal channel (`stopSignal`) for stopping the worker pool.
+2. Структура `WorkerPool` представляет воркер-пул. Он содержит определенное количество рабочих горутин (`workers`), канал (`semaphore`) для ограничения числа одновременно активных рабочих, канал (`taskQueue`) для постановки задач в очередь, `sync.WaitGroup` (`wg`) для отслеживания активных рабочих и канал сигнала остановки (`stopSignal`) для завершения воркер-пула.
 
-3. `NewWorkerPool` function creates a new worker pool with a specified number of workers. It starts goroutines for task execution and waits for their completion when the program exits.
+3. Функция `NewWorkerPool` создает новый воркер-пул с заданным количеством рабочих. Она запускает горутины для выполнения задач и ожидает их завершения при выходе из программы.
 
-4. `Submit` method is used to send tasks to the worker pool for execution.
+4. Метод `Submit` используется для отправки задач в воркер-пул для выполнения.
 
-5. `Wait` method waits for all tasks to complete.
+5. Метод `Wait` ожидает завершения всех задач.
 
-6. `worker` function represents an active goroutine that executes tasks. It acquires a semaphore to limit the number of active goroutines, executes the task, and releases the semaphore.
+6. Функция `worker` представляет активную горутину, которая выполняет задачи. Она получает семафор для ограничения числа активных горутин, выполняет задачу и освобождает семафор.
 
-The code demonstrates how tasks can be executed concurrently using a worker pool with a limited number of workers. The worker pool ensures that only a controlled number of tasks are executed in parallel, preventing resource overload and efficiently managing task execution.
+Этот код демонстрирует, как задачи могут быть выполнены параллельно с использованием воркер-пула с ограниченным числом рабочих. Воркер-пул обеспечивает выполнение только контролируемого числа задач параллельно, предотвращая перегрузку ресурсов и эффективно управляя выполнением задач.

@@ -1,25 +1,25 @@
-## The "Done channel pattern"
+## Паттерн "Done channel"
 
-The provided examples demonstrate various scenarios where synchronization and coordination of goroutines are essential. Here's a summary of each example:
+Предоставленные примеры демонстрируют различные сценарии, в которых синхронизация и координация горутин играют важную роль. Вот краткое описание каждого примера:
 
-### Example 1:
-- Demonstrates the "Done channel pattern" for coordinating the termination of multiple goroutines.
-- A `done` channel is used for notifications of goroutines' completion.
-- The main goroutine waits for notifications from each goroutine to determine when they have all finished.
+### Пример 1:
+- Демонстрирует паттерн "Done channel" для координации завершения нескольких горутин.
+- Используется канал `done` для уведомлений о завершении горутин.
+- Основная горутина ожидает уведомлений от каждой горутины, чтобы определить, когда они все завершились.
 
-### Example 2:
-- Shows the use of the "Done channel pattern" to coordinate and wait for the completion of multiple HTTP requests.
-- A `done` channel with a buffer is used to collect results from the goroutines.
-- The main goroutine processes results as they become available.
+### Пример 2:
+- Показывает использование паттерна "Done channel" для координации и ожидания завершения нескольких HTTP-запросов.
+- Используется канал `done` с буфером для сбора результатов от горутин.
+- Основная горутина обрабатывает результаты по мере их появления.
 
-### Example 3:
-- Introduces a timeout mechanism to handle potential delays or timeouts in goroutines.
-- A `done` channel is used to signal the asynchronous task to stop if a timeout occurs.
-- This pattern allows for the handling of timeouts in concurrent operations.
+### Пример 3:
+- Вводит механизм тайм-аута для обработки возможных задержек или истечений времени в горутинах.
+- Используется канал `done` для сигнализации асинхронной задаче о прекращении выполнения при истечении времени.
+- Этот паттерн позволяет обрабатывать тайм-ауты в параллельных операциях.
 
-### Example 4:
-- Demonstrates the use of the `context.Context` with a cancellation mechanism to achieve similar synchronization.
-- A `context` is created to monitor the operation's progress.
-- The main goroutine uses a `select` statement to wait for results or a timeout, and it cancels the operation explicitly.
+### Пример 4:
+- Демонстрирует использование `context.Context` с механизмом отмены для достижения аналогичной синхронизации.
+- Создается `context` для мониторинга прогресса операции.
+- Основная горутина использует оператор `select` для ожидания результатов или тайм-аута и явным образом отменяет операцию.
 
-These examples showcase different aspects of concurrent programming in Go, emphasizing the importance of coordination, synchronization, and handling potential issues like timeouts.
+Эти примеры показывают разные аспекты параллельного программирования в Go, подчеркивая важность координации, синхронизации и обработки потенциальных проблем, таких как тайм-ауты.

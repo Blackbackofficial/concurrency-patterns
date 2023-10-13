@@ -1,21 +1,21 @@
-## Example 1:
+## Пример 1:
 
-The "Fan-Out" pattern, which is used to distribute data from one source channel to multiple worker goroutines. Here's how it works:
+Паттерн "Fan-Out", используемый для распределения данных из одного исходного канала на несколько рабочих горутин. Вот как это работает:
 
-1. The `FanOut` function takes a source channel (`src`) and the number of worker goroutines (`n`) to distribute the data to.
+1. Функция `FanOut` принимает исходный канал (`src`) и количество рабочих горутин (`n`), к которым данные будут распределены.
 
-2. It creates an array of destination channels (`dests`) and launches `n` goroutines, each with its own destination channel. These destination channels are used to distribute the data from the source channel to the workers.
+2. Она создает массив целевых каналов (`dests`) и запускает `n` горутин, каждая из которых имеет свой собственный целевой канал. Эти целевые каналы используются для распределения данных из исходного канала среди рабочих.
 
-3. Inside each worker goroutine, a `for` loop reads data from the source channel and forwards it to the associated destination channel. This allows the data to be distributed concurrently to all worker goroutines.
+3. Внутри каждой рабочей горутины есть цикл `for`, который читает данные из исходного канала и пересылает их в соответствующий целевой канал. Это позволяет распределить данные параллельно по всем рабочим горутинам.
 
-4. The `main` function starts by creating a source channel using the `source` function, which populates the source channel with integers from 1 to 10.
+4. Функция `main` начинается с создания исходного канала с использованием функции `source`, которая заполняет исходный канал целыми числами от 1 до 10.
 
-5. Then, the `FanOut` function is called with the source channel and the desired number of worker goroutines (in this case, 5). The `FanOut` function creates the destination channels and distributes the data to the workers.
+5. Затем вызывается функция `FanOut` с исходным каналом и желаемым количеством рабочих горутин (в данном случае 5). Функция `FanOut` создает целевые каналы и распределяет данные среди рабочих.
 
-6. A `sync.WaitGroup` (`wg`) is used to ensure that the `main` function waits for all workers to finish processing.
+6. Для обеспечения ожидания завершения работы всех рабочих горутин в функции `main` используется `sync.WaitGroup` (`wg`).
 
-7. For each destination channel created by `FanOut`, a worker goroutine is started. These worker goroutines read data from their respective destination channels and print it.
+7. Для каждого целевого канала, созданного функцией `FanOut`, запускается рабочая горутина. Эти рабочие горутины читают данные из соответствующих целевых каналов и выводят их.
 
-8. The `main` function waits for all worker goroutines to complete using `wg.Wait()`. After all workers finish processing, the program exits.
+8. Функция `main` ожидает завершения всех рабочих горутин с использованием `wg.Wait()`. После завершения всех рабочих горутин программа завершает работу.
 
-In summary, the "Fan-Out" pattern efficiently distributes data from a single source to multiple worker goroutines, allowing for concurrent processing and workload distribution. It is especially useful in scenarios where you need to parallelize tasks across multiple workers.
+В заключение, паттерн "Fan-Out" эффективно распределяет данные из одного источника на несколько рабочих горутин для параллельной обработки и распределения нагрузки. Он особенно полезен в ситуациях, где необходимо параллельное выполнение задач с участием нескольких рабочих.

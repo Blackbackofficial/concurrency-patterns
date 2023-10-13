@@ -1,16 +1,16 @@
-## Example 2:
-This example demonstrates the "Fan-In" pattern, which is used to merge data from multiple channels into a single channel. Here's how it works:
+## Пример 2:
+Этот пример демонстрирует паттерн "Fan-In", который используется для объединения данных из нескольких каналов в один. Вот как это работает:
 
-1. In the `mergeChannels` function, a channel named `merged` is created. This channel will be used to combine data from multiple input channels, referred to as `channels`.
+1. В функции `mergeChannels` создается канал с именем `merged`. Этот канал будет использоваться для объединения данных из нескольких входных каналов, называемых `channels`.
 
-2. A goroutine is created for each of the input channels (`channels`). These goroutines read data from their respective input channels (`ch1`, `ch2`, `ch3`) and send that data to the `merged` channel. Each goroutine waits for the completion of this operation using `defer wg.Done()`.
+2. Для каждого из входных каналов (`channels`) создается горутина. Эти горутины читают данные из своих соответствующих входных каналов (`ch1`, `ch2`, `ch3`) и отправляют эти данные в канал `merged`. Каждая горутина ожидает завершения этой операции, используя `defer wg.Done()`.
 
-3. The `merged` channel is considered closed once data has been read from all the input channels. This closing operation is performed in an additional goroutine, which uses a `sync.WaitGroup` (`wg`) to track the completion of all goroutines. When all goroutines have completed and signified this with `wg.Done()`, this additional goroutine closes the `merged` channel using `close(merged)`.
+3. Канал `merged` считается закрытым, как только данные будут прочитаны из всех входных каналов. Закрытие этого канала выполняется в дополнительной горутине, которая использует `sync.WaitGroup` (`wg`) для отслеживания завершения всех горутин. Когда все горутины завершили работу и сигнализировали об этом с помощью `wg.Done()`, эта дополнительная горутина закрывает канал `merged`, используя `close(merged)`.
 
-4. In the `main` function, three input channels (`ch1`, `ch2`, and `ch3`) are created. Each of these channels is populated with numbers within the respective ranges: 1 to 5, 6 to 10, and 11 to 15.
+4. В функции `main` создаются три входных канала (`ch1`, `ch2` и `ch3`). Каждый из этих каналов заполняется числами в соответствующих диапазонах: от 1 до 5, от 6 до 10 и от 11 до 15.
 
-5. After creating and populating the input channels, the `mergeChannels` function is called with these channels as arguments. The `mergeChannels` function combines the data from all input channels into the `merged` channel.
+5. После создания и заполнения входных каналов, функция `mergeChannels` вызывается с этими каналами в качестве аргументов. Функция `mergeChannels` объединяет данные из всех входных каналов в канале `merged`.
 
-6. Then, in the `main` function, data is read from the `merged` channel using a `for val := range merged` loop. This loop allows for sequentially reading and printing the combined data from all input channels.
+6. Затем, в функции `main`, данные читаются из канала `merged` с использованием цикла `for val := range merged`. Этот цикл позволяет последовательно читать и выводить объединенные данные из всех входных каналов.
 
-In summary, this code uses the "Fan-In" pattern to merge data from multiple input channels into a single channel, allowing you to efficiently work with data from different sources asynchronously.
+В итоге этот код использует паттерн "Fan-In" для объединения данных из нескольких входных каналов в один, что позволяет эффективно работать с данными из разных источников асинхронно.

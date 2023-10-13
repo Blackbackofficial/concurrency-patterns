@@ -1,15 +1,15 @@
-## Example 1:
+## Пример 1:
 
-This code uses the "backpressure" pattern using the `PressureGauge` structure. Here's how it works:
+Этот код использует паттерн "backpressure" с использованием структуры `PressureGauge`. Вот как это работает:
 
-1. `PressureGauge` is a structure representing the "backpressure" control mechanism. It contains a channel `ch`, which has a limited bandwidth specified when creating an instance of the structure.
+1. `PressureGauge` - это структура, представляющая механизм управления "backpressure". Она содержит канал `ch`, у которого ограниченная пропускная способность, указываемая при создании экземпляра этой структуры.
 
-2. `New(limit int)` is a function that initializes `PressureGauge'. It fills the channel `ch` with the specified limit representing the maximum number of simultaneous tasks.
+2. Функция `New(limit int)` - это функция, которая инициализирует `PressureGauge`. Она заполняет канал `ch` с указанным лимитом, представляющим максимальное количество одновременных задач.
 
-3. `Do(fn func()) error` is the `PressureGauge` method, which is used to perform the task taking into account "backpressure". It tries to extract the value from the `ch` channel. If there is bandwidth available, it executes the task (passed as a function `fn`) and then returns the bandwidth by adding the value back to the channel `ch'. If there is no bandwidth, it returns the error "out of capacity".
+3. Метод `Do(fn func()) error` - это метод `PressureGauge`, который используется для выполнения задачи с учетом "backpressure". Он пытается извлечь значение из канала `ch`. Если есть доступная пропускная способность, он выполняет задачу (переданную как функцию `fn`) и затем возвращает пропускную способность, добавляя значение обратно в канал `ch`. Если пропускной способности нет, он возвращает ошибку "out of capacity" (недостаток пропускной способности).
 
-4. In the `runServer(pg *PressureGauge) function`PressureGauge` is used to control the number of simultaneous requests to the server. If there is available bandwidth (which is limited to 3 in this case), the server performs an "expensive operation" (the `expensiveOperation` function) and sends a response. If there is no available bandwidth, the server returns the HTTP status "429 Too Many Requests".
+4. В функции `runServer(pg *PressureGauge)` используется `PressureGauge` для контроля числа одновременных запросов к серверу. Если есть доступная пропускная способность (которая в этом случае ограничена 3), сервер выполняет "дорогостоящую операцию" (функцию `expensiveOperation`) и отправляет ответ. Если нет доступной пропускной способности, сервер возвращает статус HTTP "429 Too Many Requests" (слишком много запросов).
 
-5. In the `main()` function, several goroutins are launched that make HTTP requests to the server. Using `PressureGauge`, they are limited to three simultaneous requests, which demonstrates the use of the "backpressure" pattern to control the flow of data and prevent server overload.
+5. В функции `main()` запускаются несколько горутин, которые выполняют HTTP-запросы к серверу. С использованием `PressureGauge` их количество ограничено тремя одновременными запросами, что демонстрирует использование паттерна "backpressure" для контроля потока данных и предотвращения перегрузки сервера.
 
-This code illustrates the use of "backpressure" to manage the load on the server and effectively manage resources, preventing system overload.
+Этот код иллюстрирует использование "backpressure" для управления нагрузкой на сервер и эффективного управления ресурсами, предотвращая перегрузку системы.

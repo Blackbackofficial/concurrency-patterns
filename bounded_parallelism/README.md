@@ -1,10 +1,9 @@
-The "Bounded Parallelism" pattern is useful when you want to limit the number of concurrent operations to prevent resource exhaustion, such as excessive memory or CPU usage. It's a common approach in scenarios where there's a need to control and optimize the concurrency of tasks, especially when dealing with limited resources.
+Паттерн "Bounded Parallelism" полезен, когда необходимо ограничить количество одновременных операций, чтобы избежать истощения ресурсов, таких как избыточное использование памяти или процессора. Это распространенный подход в ситуациях, где необходимо управлять и оптимизировать параллелизм задач, особенно при работе с ограниченными ресурсами.
 
+### Пример 1:
 
-### Example 1:
+**Bounded Parallelism** ограничивает одновременные операции с использованием семафора. Это предотвращает перегрузку системы и обеспечивает эффективную обработку.
 
-**Bounded Parallelism** limits concurrent operations using a semaphore. It prevents system overload and ensures efficient processing.
+### Пример 2:
 
-### Example 2:
-
-In web scraping, **Limited Concurrency** prevents overloading websites, improves efficiency, and avoids server overload by controlling concurrent requests (e.g., 5 requests at a time).
+В веб-скрининге **Bounded Parallelism** предотвращает перегрузку веб-сайтов, улучшает эффективность и избегает перегрузки сервера путем управления одновременными запросами (например, 5 запросов одновременно).

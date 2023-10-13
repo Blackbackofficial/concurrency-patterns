@@ -1,21 +1,21 @@
-## Example 3:
+## Пример 3:
 
-This variation introduces a timeout mechanism to handle cases where a goroutine might not produce a result in a timely manner, preventing potential resource leaks.
+Эта вариация вводит механизм ожидания для обработки ситуаций, когда горутина может не произвести результат своевременно, предотвращая потенциальные утечки ресурсов.
 
-Here's how this pattern works:
+Вот как работает этот паттерн:
 
-1. A `result` channel of type `interface{}` is created to receive the result of some computation or operation performed by a goroutine.
+1. Создается канал `result` типа `interface{}`, который используется для приема результата каких-либо вычислений или операции, выполненной горутиной.
 
-2. A `done` channel of type `struct{}` (an empty struct, also known as a signal channel) is created. This channel will be used to signal the goroutine to stop if a timeout occurs.
+2. Создается канал `done` типа `struct{}` (пустая структура, также известная как сигнальный канал). Этот канал будет использоваться для сигнализации горутине остановиться, если возникает тайм-аут.
 
-3. A new goroutine is launched, which represents some asynchronous task. This goroutine attempts to send a result to the `result` channel. However, it does so within a `select` statement, which has two cases:
-    - The first case attempts to send the result to the `result` channel when the operation is completed.
-    - The second case listens for a signal from the `done` channel. If the `done` channel is closed, it immediately aborts the operation, preventing it from blocking indefinitely.
+3. Запускается новая горутина, представляющая асинхронную задачу. Эта горутина пытается отправить результат в канал `result`. Однако она делает это внутри оператора `select`, который имеет два случая:
+   - Первый случай пытается отправить результат в канал `result`, когда операция завершена.
+   - Второй случай ожидает сигнала от канала `done`. Если канал `done` закрыт, он немедленно прерывает операцию, предотвращая блокировку на неопределенное время.
 
-4. In the main part of the code, there is another `select` statement. This one waits for one of two events:
-    - If a result is received from the `result` channel, it is processed.
-    - If a timeout of one second elapses (as specified by `time.After(time.Second)`), it handles the timeout scenario.
+4. В основной части кода есть еще один оператор `select`. Он ожидает одного из двух событий:
+   - Если результат получен из канала `result`, он обрабатывается.
+   - Если проходит тайм-аут в одну секунду (как указано в `time.After(time.Second)`), выполняется обработка сценария тайм-аута.
 
-5. After either a result is received or a timeout occurs, the code closes the `done` channel to signal to the asynchronous goroutine that it should clean up and exit.
+5. После получения результата или возникновения тайм-аута код закрывает канал `done`, чтобы сигнализировать асинхронной горутине, что она должна провести очистку и завершиться.
 
-This pattern allows for the concurrent execution of a task with the ability to handle timeouts effectively. If the asynchronous task takes too long to produce a result, the timeout mechanism ensures that resources are not tied up indefinitely. It's a useful pattern when dealing with scenarios where timely responses are essential, and you want to ensure that the system can gracefully handle situations where responses are delayed or never arrive.
+Этот паттерн позволяет выполнять задачу параллельно с возможностью эффективной обработки тайм-аутов. Если асинхронная задача занимает слишком много времени для производства результата, механизм тайм-аута гарантирует, что ресурсы не будут связаны бесконечно. Это полезный паттерн, когда речь идет о сценариях, в которых своевременные ответы существенны, и вы хотите обеспечить грациозную обработку ситуаций, когда ответы задерживаются или не приходят.

@@ -1,17 +1,17 @@
-## Example 2:
+## Пример 2:
 
-The "Done channel pattern" is used for coordinating and waiting for the completion of multiple HTTP requests.
+Паттерн "Done channel" используется для координации и ожидания завершения нескольких HTTP-запросов.
 
-Here's how the pattern is applied:
+Вот как применяется этот паттерн:
 
-1. A `done` channel of type `chan RequestResult` is created with a buffer size equal to the number of URLs in the `urls` slice. This channel will be used to send the results of the HTTP requests.
+1. Создается канал `done` типа `chan RequestResult` с размером буфера, равным количеству URL-адресов в срезе `urls`. Этот канал будет использоваться для отправки результатов HTTP-запросов.
 
-2. A loop iterates through the `urls` slice. For each URL, a new goroutine is launched by calling `go processRequest(url, done)`. Each goroutine sends the result of the HTTP request to the `done` channel upon completion.
+2. Цикл перебирает срез `urls`. Для каждого URL создается новая горутина с вызовом `go processRequest(url, done)`. Каждая горутина отправляет результат HTTP-запроса в канал `done` по завершении.
 
-3. The main goroutine waits for the completion of all HTTP requests using a loop that iterates over the number of URLs. It receives the results from the `done` channel using `<-done`. This allows the main goroutine to process the results as they become available.
+3. Главная горутина ожидает завершения всех HTTP-запросов с помощью цикла, который перебирает количество URL-адресов. Она получает результаты из канала `done` с использованием `<-done`. Это позволяет главной горутине обрабатывать результаты по мере их поступления.
 
-4. For each received result, the code checks whether the request was successful (`result.Success`). If the request was successful, it prints a message indicating success along with the URL. If the request failed, it prints an error message with the URL and the specific error that occurred.
+4. Для каждого полученного результата код проверяет, был ли запрос успешным (`result.Success`). Если запрос был успешным, выводится сообщение об успехе вместе с URL. Если запрос завершился с ошибкой, выводится сообщение об ошибке с URL и конкретной ошибкой, которая произошла.
 
-5. Finally, after processing all the results, the `done` channel is closed using `close(done)`.
+5. Наконец, после обработки всех результатов, канал `done` закрывается с помощью `close(done)`.
 
-This pattern allows for concurrent execution of multiple HTTP requests and provides a way to collect and process the results as they arrive, making it a useful approach for handling parallel tasks.
+Этот паттерн позволяет выполнять несколько HTTP-запросов параллельно и предоставляет способ собирать и обрабатывать результаты по мере их получения, что делает его полезным для обработки параллельных задач.

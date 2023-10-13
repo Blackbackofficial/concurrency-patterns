@@ -1,24 +1,25 @@
-## The "Fan-In"
-The "Fan-In" pattern allows combining data from multiple sources into one, enabling asynchronous reading and passing of data into a single channel. Key steps:
+## "Fan-In"
 
-1. Create a destination channel.
+Паттерн "Fan-In" позволяет объединить данные из нескольких источников в один, обеспечивая асинхронное чтение и передачу данных в один канал. Основные шаги:
 
-2. Launch goroutines to read and pass data to the destination channel.
+1. Создайте целевой канал.
 
-3. Use signaling channels for synchronization.
+2. Запустите горутины для чтения и передачи данных в целевой канал.
 
-4. Close the destination channel after goroutines finish.
+3. Используйте каналы сигнализации для синхронизации.
 
-This is useful for efficient asynchronous processing of data from various sources.
+4. Закройте целевой канал после завершения горутин.
+
+Этот подход полезен для эффективной асинхронной обработки данных из различных источников.
 
 
-### Example 1:
-The "Fan-In" pattern is applied to combine data from various sources (channels) into one, allowing asynchronous reading of data from multiple sources and passing it to a single channel for further processing.
+### Пример 1:
+Паттерн "Fan-In" используется для объединения данных из различных источников (каналов) в один, что позволяет асинхронно читать данные из разных источников и передавать их в один канал для дальнейшей обработки.
 
-### Example 2:
-This example also uses the "Fan-In" pattern to merge data from multiple channels into one. This enables efficient asynchronous handling of data from different sources.
+### Пример 2:
+Этот пример также использует паттерн "Fan-In" для объединения данных из разных каналов в один. Это обеспечивает эффективную асинхронную обработку данных из разных источников.
 
-### Example 3:
-Here, the "Fan-In" pattern is similarly used to merge data from different channels, with the provision for graceful termination of the merging operation using an additional signal channel, `done`. This ensures efficient merging of data from diverse sources and a harmonious conclusion to the operation.
+### Пример 3:
+Здесь паттерн "Fan-In" также используется для объединения данных из разных каналов, с возможностью гармоничного завершения операции объединения с использованием дополнительного сигнального канала `done`. Это обеспечивает эффективное объединение данных из разных источников и плавное завершение операции.
 
-Each of these examples illustrates the application of the "Fan-In" pattern to combine data from different sources into a single channel, offering convenience and efficiency for asynchronous data processing from various origins.
+Каждый из этих примеров демонстрирует применение паттерна "Fan-In" для объединения данных из разных источников в один канал, что обеспечивает удобство и эффективность асинхронной обработки данных из разных источников.

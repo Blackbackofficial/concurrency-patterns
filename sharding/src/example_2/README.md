@@ -1,21 +1,21 @@
-## Example 2:
+## Пример 2:
 
-The "Sharding" pattern is applied to create a sharded storage for distributed data management. Here's how it works:
+Паттерн "Sharding" применяется для создания разделенного хранилища данных, предназначенного для управления распределенными данными. Вот как это работает:
 
-1. **Shard**: This struct represents an individual shard, which is essentially a partition for storing data. Each shard is equipped with a read-write mutex (`sync.RWMutex`) to ensure thread-safe data access and a map (`map`) to store key-value pairs.
+1. **Шард**: Эта структура представляет собой отдельный шард, который по сути является разделом для хранения данных. Каждый шард оснащен мьютексом для чтения и записи (`sync.RWMutex`), чтобы обеспечить безопасный доступ к данным, и картой (`map`) для хранения пар ключ-значение.
 
-2. **ShardedStorage**: It's a collection of shards used for distributed data storage.
+2. **ShardedStorage**: Это коллекция шардов, используемых для хранения распределенных данных.
 
-3. **NewShardedStorage (Creating a Sharded Storage)**: This function creates a new sharded storage with a specified number of shards (`numShards`). For each shard, a map is created for data storage, and the shards are stored within the `ShardedStorage`.
+3. **NewShardedStorage (Создание разделенного хранилища)**: Эта функция создает новое разделенное хранилище с заданным количеством шардов (`numShards`). Для каждого шарда создается карта для хранения данных, и шарды хранятся внутри `ShardedStorage`.
 
-4. **Set (Adding Data)**: The `Set` method allows you to add key-value pairs to the sharded storage. It calculates the appropriate shard based on the key using the `shardIndex` function, locks the shard for writing, sets the value, and releases the lock.
+4. **Set (Добавление данных)**: Метод `Set` позволяет добавлять пары ключ-значение в разделенное хранилище данных. Он вычисляет соответствующий шард на основе ключа с использованием функции `shardIndex`, блокирует шард для записи, устанавливает значение и освобождает блокировку.
 
-5. **Get (Retrieving Data)**: The `Get` method retrieves the value associated with a key from the sharded storage. Similar to the `Set` method, it calculates the corresponding shard, locks it for reading, and retrieves the value while maintaining thread safety.
+5. **Get (Извлечение данных)**: Метод `Get` извлекает значение, связанное с ключом, из разделенного хранилища данных. Аналогично методу `Set`, он вычисляет соответствующий шард, блокирует его для чтения и извлекает значение с сохранением безопасности потоков.
 
-6. **shardIndex (Calculating Shard Index)**: This function calculates the index of the shard for a given key. In this example, it employs a simple hashing function for demonstration purposes, but in a real-world scenario, a more sophisticated hashing function should be used.
+6. **shardIndex (Вычисление индекса шарда)**: Эта функция вычисляет индекс шарда для заданного ключа. В этом примере она использует простую хеш-функцию в демонстрационных целях, но в реальной ситуации следует использовать более сложный метод хеширования.
 
-7. **hashString (Simple Hash Function)**: This function provides a simple hash calculation based on the characters in the input string.
+7. **hashString (Простая хеш-функция)**: Эта функция выполняет простой расчет хеша на основе символов во входной строке.
 
-8. **Main Function**: In the `main` function, a sharded storage with five shards is created. Key-value pairs are added to the sharded storage, and then, the data is retrieved and printed. The `shardIndex` function helps in determining which shard to use for each key, ensuring that the data is distributed across the shards.
+8. **Главная функция**: В функции `main` создается разделенное хранилище данных с пятью шардами. Пары ключ-значение добавляются в разделенное хранилище данных, а затем данные извлекаются и выводятся. Функция `shardIndex` помогает определить, какой шард использовать для каждого ключа, обеспечивая распределение данных между шардами.
 
-The "Sharding" pattern here allows for the efficient distribution and management of data among multiple shards, ensuring that data can be accessed and modified in a parallel and thread-safe manner.
+Паттерн "Sharding" в этом коде позволяет эффективно распределять и управлять данными между несколькими шардами, обеспечивая доступ и модификацию данных параллельно и безопасно с точки зрения потоков.

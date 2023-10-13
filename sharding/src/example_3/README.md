@@ -1,23 +1,23 @@
-## Example 3:
+## Пример 3:
 
-The "Sharding" pattern is also applied to distribute and manage data among multiple shards. Here's how it works:
+Паттерн "Sharding" также применяется для распределения и управления данными между несколькими шардами. Вот как это работает:
 
-1. **Data Structure**: The `Data` struct is used to represent key-value pairs, where `Key` is a string and `Value` is an integer.
+1. **Структура данных**: Структура `Data` используется для представления пар ключ-значение, где `Key` - это строка, а `Value` - целое число.
 
-2. **Main Function**:
-    - An array of `Data` elements is created, representing the data that needs to be distributed across shards.
-    - A slice of maps (`shards`) is created to simulate the shards, in this case, three shards.
-    - A `sync.WaitGroup` (`wg`) is used to ensure that all goroutines finish their work.
+2. **Главная функция**:
+   - Создается массив элементов `Data`, представляющий данные, которые нужно распределить по шардам.
+   - Создается срез карт (`shards`) для имитации шардов, в данном случае, три шарда.
+   - Используется `sync.WaitGroup` (`wg`), чтобы гарантировать, что все горутины завершат свою работу.
 
-3. **Goroutines for Data Distribution**:
-    - For each `Data` element in the `data` slice, a goroutine is started. Each goroutine is responsible for distributing a piece of data to one of the three shards.
-    - The `hashCode` function is used to calculate the shard index for a given key. It uses a simple hash function for this demonstration, but in real applications, a more complex hashing method should be employed. The shard index is determined by the result of `hashCode(d.Key) % 3`, ensuring even distribution among the three shards.
-    - The goroutine then adds the data to the appropriate shard.
+3. **Горутины для распределения данных**:
+   - Для каждого элемента `Data` в срезе `data` запускается горутина. Каждая горутина отвечает за распределение части данных в один из трех шардов.
+   - Для вычисления индекса шарда для данного ключа используется функция `hashCode`. В этом примере используется простая хеш-функция для демонстрации, но в реальных приложениях следует использовать более сложный метод хеширования. Индекс шарда определяется результатом `hashCode(d.Key) % 3`, что обеспечивает равномерное распределение между тремя шардами.
+   - Затем горутина добавляет данные в соответствующий шард.
 
-4. **Waiting for Goroutines**: The `main` function waits for all goroutines to finish their work using the `wg.Wait()` statement.
+4. **Ожидание завершения горутин**: Главная функция ждет, пока все горутины завершат свою работу с использованием оператора `wg.Wait()`.
 
-5. **Outputting Data from Shards**:
-    - After all data is distributed, the `main` function proceeds to output data from all shards.
-    - It iterates through the `shards` slice and prints the keys and values within each shard.
+5. **Вывод данных из шардов**:
+   - После того как все данные распределены, главная функция переходит к выводу данных из всех шардов.
+   - Она перебирает срез `shards` и выводит ключи и значения внутри каждого шарда.
 
-The "Sharding" pattern in this code demonstrates the distribution of data among multiple shards, allowing for parallel processing and efficient data management. It's particularly useful in scenarios where data needs to be divided into smaller partitions for scalability and parallelism.
+Паттерн "Sharding" в этом коде демонстрирует распределение данных между несколькими шардами, что позволяет проводить параллельную обработку и эффективное управление данными. Он особенно полезен в ситуациях, где данные должны быть разделены на более мелкие разделы для повышения масштабируемости и параллелизма.

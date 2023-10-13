@@ -1,23 +1,23 @@
-## Example 4:
+## Пример 4:
 
-This code demonstrates a scenario where the "Done channel pattern" is not directly applied, but the `context.Context` with a cancellation mechanism is used to achieve a similar goal.
+Этот код демонстрирует сценарий, в котором "Паттерн канала завершения" не применяется непосредственно, но используется `context.Context` с механизмом отмены для достижения схожей цели.
 
-Here's how this code works:
+Вот как работает этот код:
 
-1. The `request` function simulates an asynchronous operation that takes approximately 5 seconds to complete. This operation is monitored for cancellation through the provided `context.Context`.
+1. Функция `request` имитирует асинхронную операцию, которая занимает примерно 5 секунд на выполнение. Эта операция мониторится на предмет отмены через предоставленный `context.Context`.
 
-2. In the `main` function, a `context` is created using `context.WithCancel(context.Background())`, allowing you to cancel the context when needed. The `defer cancel()` statement is used to ensure that the context is canceled, but it's not relied upon for timely cancellation. Instead, explicit cancellation is performed later in the code.
+2. В функции `main` создается `context` с помощью `context.WithCancel(context.Background())`, что позволяет отменить контекст по мере необходимости. Оператор `defer cancel()` используется для обеспечения отмены контекста, но он не используется для своевременной отмены. Вместо этого отмена выполняется явно позже в коде.
 
-3. A buffered channel named `result` is created to receive the result of the `request` operation.
+3. Создается буферизованный канал с именем `result` для приема результата операции `request`.
 
-4. A goroutine is launched to execute the `request` function. The goroutine uses the provided context `ctx` to perform the operation. If the operation completes successfully, it sends the result to the `result` channel. If an error occurs or the context is canceled, it prints an error message but does not block indefinitely.
+4. Запускается горутина для выполнения функции `request`. Горутина использует предоставленный контекст `ctx` для выполнения операции. Если операция завершается успешно, она отправляет результат в канал `result`. Если происходит ошибка или контекст отменяется, выводится сообщение об ошибке, но не происходит блокировка на неопределенное время.
 
-5. The main part of the code uses a `select` statement to wait for one of the following conditions:
-    - If a result is received from the `result` channel, it prints the result.
-    - If one second elapses (as specified by `time.After(time.Second)`), it prints a "request timeout" message.
+5. Основная часть кода использует оператор `select` для ожидания одного из следующих условий:
+   - Если результат получен из канала `result`, выводится результат.
+   - Если прошла одна секунда (как указано в `time.After(time.Second)`), выводится сообщение "запрос превысил время ожидания".
 
-6. After waiting for either the result or the timeout, the `cancel()` function is explicitly called to cancel the context. This is important to ensure timely cancellation and cleanup.
+6. После ожидания результата или истечения времени ожидания вызывается функция `cancel()` для явной отмены контекста. Это важно для обеспечения своевременной отмены и очистки.
 
-7. Finally, a small delay with `time.Sleep` is introduced to allow time for the sub-goroutine to print a "cancel" message. This is not directly related to the "Done channel pattern" but serves as a waiting mechanism.
+7. Наконец, вводится небольшая задержка с помощью `time.Sleep`, чтобы предоставить времени подгорутине для вывода сообщения "отмена". Это не связано непосредственно с "Паттерном канала завершения", но служит в качестве механизма ожидания.
 
-In this code, the `context.Context` is used for signaling and canceling the operation, similar to how a done channel would be used in the "Done channel pattern." The primary difference is that the cancellation is managed via the `context` itself, allowing for clean and timely cancellation of the operation, which is essential in many concurrent scenarios.
+В этом коде `context.Context` используется для сигнализации и отмены операции, аналогично тому, как канал завершения использовался бы в "Паттерне канала завершения". Основное различие заключается в том, что отмена управляется самим `context`, что позволяет осуществить чистую и своевременную отмену операции, что является важным во многих сценариях параллелизма.

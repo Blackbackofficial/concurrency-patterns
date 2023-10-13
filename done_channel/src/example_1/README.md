@@ -1,13 +1,13 @@
-## Example 1:
+## Пример 1:
 
-The "Done channel pattern" is applied here to coordinate the termination of multiple goroutines and receive notifications of their completion.
+Здесь применяется паттерн "Done channel" для координации завершения нескольких горутин и получения уведомлений о завершении их работы.
 
-1. A `done` channel is created, which will be used to receive notifications of the termination of each goroutine's work. The `done` channel has a buffer with a size equal to `numWorkers`, representing the number of goroutines to wait for.
+1. Создается канал `done`, который будет использоваться для получения уведомлений о завершении работы каждой горутины. У канала `done` есть буфер размером `numWorkers`, представляющий количество горутин, за которыми нужно следить.
 
-2. A goroutine is created using a `for i := 0; i < numWorkers; i++` loop. In each goroutine, the `worker(id, done)` function is called, which performs some work and, upon completion, sends the value `true` to the `done` channel. This signals the completion of the goroutine's work.
+2. Создается горутина с использованием цикла `for i := 0; i < numWorkers; i++`. В каждой горутине вызывается функция `worker(id, done)`, которая выполняет некоторую работу и, по завершении, отправляет значение `true` в канал `done`. Это сигнализирует о завершении работы горутины.
 
-3. Another goroutine is created to wait for the termination of all goroutines using `wg.Wait()`. After all goroutines have finished, this goroutine closes the `done` channel using `close(done)`.
+3. Создается еще одна горутина для ожидания завершения всех горутин с использованием `wg.Wait()`. После завершения всех горутин эта горутина закрывает канал `done` с помощью `close(done)`.
 
-4. The main goroutine waits for notifications of each goroutine's completion using `for range done`. As soon as the value `true` is sent to the `done` channel, the main goroutine receives this notification and prints a message indicating the completion of the goroutine's work.
+4. Главная горутина ожидает уведомлений о завершении работы каждой горутины с использованием `for range done`. Как только значение `true` отправляется в канал `done`, главная горутина получает это уведомление и выводит сообщение о завершении работы горутины.
 
-In summary, the Done Channel pattern is used for synchronization and control of the execution of multiple goroutines. The `done` channel is employed to send notifications of each goroutine's completion, and the main goroutine waits to receive all these notifications, allowing for precise determination of when all the goroutines have finished.
+В итоге паттерн "Done channel" используется для синхронизации и управления выполнением нескольких горутин. Канал `done` используется для отправки уведомлений о завершении работы каждой горутины, и главная горутина ожидает получения всех этих уведомлений, что позволяет точно определить, когда все горутины завершили работу.
