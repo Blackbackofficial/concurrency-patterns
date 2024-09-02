@@ -10,19 +10,25 @@ func main() {
 	// Create a goroutine pool with a limit of 3 active goroutines.
 	pool := NewWorkerPool(3)
 
+	mu := &sync.Mutex{}
+
 	// Create tasks for execution.
 	tasks := []Task{
-		{"Task 1", sync.Mutex{}, 2},
-		{"Task 2", sync.Mutex{}, 3},
-		{"Task 3", sync.Mutex{}, 1},
-		{"Task 4", sync.Mutex{}, 4},
-		{"Task 5", sync.Mutex{}, 2},
+		{"Task 1", mu, 2},
+		{"Task 2", mu, 3},
+		{"Task 3", mu, 1},
+		{"Task 4", mu, 4},
+		{"Task 5", mu, 2},
 	}
 
 	// Start executing tasks in the pool.
-	for _, task := range tasks {
-		pool.Submit(task)
-	}
+	go func() {
+		// Close tasks channel upon submitting everything.
+		defer pool.CloseTaskQueue()
+		for _, task := range tasks {
+			pool.Submit(task)
+		}
+	}()
 
 	// Wait for all tasks to complete.
 	pool.Wait()
@@ -33,19 +39,18 @@ func main() {
 // Task represents a task to be executed.
 type Task struct {
 	Name     string
-	mu       sync.Mutex // Mutex for synchronization
+	mu       *sync.Mutex // Mutex for synchronization
 	Duration time.Duration
 }
 
 // Execute performs the task.
 func (t *Task) Execute() {
+	fmt.Printf("%s is running...\n", t.Name)
 	t.mu.Lock()
 	defer t.mu.Unlock()
 
-	t.Duration = 3
-	fmt.Printf("%s is running...\n", t.Name)
 	time.Sleep(t.Duration * time.Second)
-	fmt.Printf("%s is done.\n", t.Name)
+	fmt.Printf("%s is done\n", t.Name)
 }
 
 // WorkerPool represents a goroutine pool for task execution.
@@ -67,18 +72,23 @@ func NewWorkerPool(workers int) *WorkerPool {
 	}
 
 	// Start active goroutines for task execution.
-	for i := 0; i < workers; i++ {
+	for range workers {
+		pool.wg.Add(1)
 		go pool.worker()
 	}
 
 	// Wait for all goroutines to finish on exit.
 	go func() {
 		pool.wg.Wait()
-		close(pool.taskQueue)
 		close(pool.stopSignal)
 	}()
 
 	return pool
+}
+
+// CloseTaskQueue closes the taskQueue channel.
+func (p *WorkerPool) CloseTaskQueue() {
+	close(p.taskQueue)
 }
 
 // Submit sends a task to the pool for execution.
@@ -93,7 +103,6 @@ func (p *WorkerPool) Wait() {
 
 // worker represents an active goroutine that executes tasks.
 func (p *WorkerPool) worker() {
-	p.wg.Add(1)
 	defer p.wg.Done()
 
 	for {
